@@ -1,0 +1,52 @@
+public class CoPrimes {
+	public static void main(String[] args) {
+		System.out.print("Enter the first coordinate (m) : ");
+        Scanner userInput1 = new Scanner(System.in);
+        int m = userInput1.nextInt();
+
+        System.out.print("Enter the second coordinate (n): ");
+        Scanner userInput2 = new Scanner(System.in);
+        int n = userInput2.nextInt();
+
+		if (m < 1 || n < 1){
+			System.err.println("Must be passed two integer values > 0");
+			System.exit(0);
+		}
+
+		generatePairsAndPlot(m + 1, n + 1);
+		System.out.println();
+		generatePairsAndPlotInReverse(m + 1, n + 1);
+	}
+
+	public static void generatePairsAndPlot(int m, int n) {
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (hasCommonFactor(i,j)) System.out.print("   ");
+				else System.out.print(" * ");
+			}
+			System.out.println();
+		}
+	}
+
+	public static boolean hasCommonFactor(int int1, int int2) {
+		if (int1 == 1 || int2 == 1) return false;
+		int remainder;
+		if(int1 >= int2) remainder = int1 % int2;
+		else remainder = int2 % int1;
+		if (remainder == 0) return true;
+		for (int x = 2; x <= remainder; x++) {
+			if (int1 % x == 0 && int2 % x == 0) return true;
+		}
+		return false;
+	}
+
+	public static void generatePairsAndPlotInReverse(int m, int n) {
+		for (int i = m - 1; i > 0; i--) {
+			for (int j = 1; j < n; j++) {
+				if (hasCommonFactor(i,j)) System.out.print("   ");
+				else System.out.print(" * ");
+			}
+			System.out.println();
+		}
+	}
+}
