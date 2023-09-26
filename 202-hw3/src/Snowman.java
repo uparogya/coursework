@@ -96,6 +96,7 @@ public class Snowman {
 			}
 			if(correctWord.getSize() == 0){ //IF NO CHARACTERS LEFT IN CORRECT WORD
 				System.out.println("Congratulations, You Won!");
+				System.out.println("The word was " + word);
 				break;
 			}
 		}
