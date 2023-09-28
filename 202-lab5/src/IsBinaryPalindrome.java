@@ -20,6 +20,12 @@ public class IsBinaryPalindrome {
 
 
         while (true){
+            if(remainder == 1 || remainder == 0){ //For the last division
+                reverseBinaryStack.push(remainder);
+                tempStack.push(remainder);
+                System.out.println(remainder);
+                break;
+            }
             count++;
             //Calculating quotient & remainder
             quotient = remainder % 2;
@@ -29,13 +35,6 @@ public class IsBinaryPalindrome {
             reverseBinaryStack.push(quotient);
             tempStack.push(quotient);
             System.out.print(quotient);
-
-            if(remainder == 1 || remainder == 0){ //For the last division
-                reverseBinaryStack.push(remainder);
-                tempStack.push(remainder);
-                System.out.println(remainder);
-                break;
-            }
         }
 
         for (int i = 0; i < count+1; i++) {
