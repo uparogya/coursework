@@ -7,6 +7,7 @@ NOTE: This class is the metaphorical "main method" of your program,
 Original code by Dan Leyzberg and Art Simon
  */
 import java.awt.*;
+import java.util.*;
 
 public class Asteroids extends Game {
 	public static final int SCREEN_WIDTH = 800;
@@ -14,58 +15,84 @@ public class Asteroids extends Game {
 
 	static int counter = 0;
 
-	private Asteroid asteroid_1;
-	private Point[] asteroid_1_points = {
-			new Point(0,0),
-			new Point(70,0),
-			new Point(70,30),
-			new Point(0,30)
-	};
-	private Point position_1 = new Point(600,200);
+	private Point[] shipCoordinates = {
+			new Point(0,75),
+			new Point(38.25,75),
+			new Point(23.25,67.5),
+			new Point(42,67.5),
 
-	private Asteroid asteroid_2;
-	private Point[] asteroid_2_points = {
-			new Point(0,0),
-			new Point(70,20),
-			new Point(50,40),
-			new Point(20,35),
-			new Point(10,20)
-	};
-	private Point position_2 = new Point(100,100);
+			new Point(55,56.25),
 
-	private Asteroid asteroid_3;
-	private Point[] asteroid_3_points = {
-			new Point(0,0),
-			new Point(70,20),
-			new Point(50,40)
+			new Point(42,45),
+			new Point(23.25,45),
+			new Point(38.25,37.5),
+			new Point(0,37.5),
+
+			new Point(15,56.25)
 	};
-	private Point position_3 = new Point(300,40);
+	private Point shipPosition = new Point(20,240);
+
+	private Ship ship = new Ship(shipCoordinates,shipPosition,0);
+
+	private java.util.List<Asteroid> randomAsteroids = new ArrayList<Asteroid>();
 
 	public Asteroids() {
 		super("Asteroids!", SCREEN_WIDTH, SCREEN_HEIGHT);
 		this.setFocusable(true);
 		this.requestFocus();
-		this.asteroid_1 = new Asteroid(asteroid_1_points,position_1,0);
-		this.asteroid_2 = new Asteroid(asteroid_2_points,position_2,30);
-		this.asteroid_3 = new Asteroid(asteroid_3_points,position_3,15);
+
+		randomAsteroids = createRandomAsteroids(10,60,30);
+	}
+
+	//  Create an array of random asteroids
+	private java.util.List<Asteroid> createRandomAsteroids(int numberOfAsteroids, int maxAsteroidWidth,
+														   int minAsteroidWidth) {
+		java.util.List<Asteroid> asteroids = new ArrayList<>(numberOfAsteroids);
+
+		for(int i = 0; i < numberOfAsteroids; ++i) {
+			// Create random asteroids by sampling points on a circle
+			// Find the radius first.
+			int radius = (int) (Math.random() * maxAsteroidWidth);
+			if(radius < minAsteroidWidth) {
+				radius += minAsteroidWidth;
+			}
+			// Find the circles angle
+			double angle = (Math.random() * Math.PI * 1.0/2.0);
+			if(angle < Math.PI * 1.0/5.0) {
+				angle += Math.PI * 1.0/5.0;
+			}
+			// Sample and store points around that circle
+			ArrayList<Point> asteroidSides = new ArrayList<Point>();
+			double originalAngle = angle;
+			while(angle < 2*Math.PI) {
+				double x = Math.cos(angle) * radius;
+				double y = Math.sin(angle) * radius;
+				asteroidSides.add(new Point(x, y));
+				angle += originalAngle;
+			}
+			// Set everything up to create the asteroid
+			Point[] inSides = asteroidSides.toArray(new Point[asteroidSides.size()]);
+			Point inPosition = new Point(Math.random() * SCREEN_WIDTH, Math.random() * SCREEN_HEIGHT);
+			double inRotation = Math.random() * 360;
+			asteroids.add(new Asteroid(inSides, inPosition, inRotation));
+		}
+		return asteroids;
 	}
 
 	public void paint(Graphics brush) {
 		brush.setColor(Color.black);
 		brush.fillRect(0,0,width,height);
 
-		// sample code for printing message for debugging
-		// counter is incremented and this message printed
-		// each time the canvas is repainted
 		counter++;
 		brush.setColor(Color.white);
 		brush.drawString("Counter is " + counter,10,10);
 
-		asteroid_1.paint(brush,Color.white);
-		asteroid_2.paint(brush,Color.white);
-		asteroid_2.move();
-		asteroid_3.paint(brush,Color.white);
-		asteroid_3.move();
+		for (Asteroid asteroid : randomAsteroids) {
+			asteroid.paint(brush,Color.white);
+			asteroid.move();
+		}
+		ship.paint(brush,Color.red);
+		ship.move();
 	}
 
 	public static void main (String[] args) {
