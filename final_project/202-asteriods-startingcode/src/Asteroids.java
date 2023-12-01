@@ -15,26 +15,16 @@ public class Asteroids extends Game {
 
 	static int counter = 0;
 
-	private Point[] shipCoordinates = {
-			new Point(0,75),
-			new Point(38.25,75),
-			new Point(23.25,67.5),
-			new Point(42,67.5),
-
-			new Point(55,56.25),
-
-			new Point(42,45),
-			new Point(23.25,45),
-			new Point(38.25,37.5),
-			new Point(0,37.5),
-
-			new Point(15,56.25)
-	};
-	private Point shipPosition = new Point(20,240);
-
-	private Ship ship = new Ship(shipCoordinates,shipPosition,0);
-
 	private java.util.List<Asteroid> randomAsteroids = new ArrayList<Asteroid>();
+
+	private Ship ship;
+
+	//some variables for collision effect on the ship
+	private int shipColorSustainValue = 0; // temp variables that counts to default the ship color
+	final int shipColorMaxSustainValue = 800; // how long should the effect be visible
+	private boolean shipHasCollided = false;
+
+	private Star[] stars;
 
 	public Asteroids() {
 		super("Asteroids!", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -42,6 +32,34 @@ public class Asteroids extends Game {
 		this.requestFocus();
 
 		randomAsteroids = createRandomAsteroids(10,60,30);
+
+		ship = createShip();
+		this.addKeyListener(ship);
+
+		stars = createStars(150,7);
+	}
+
+	private Ship createShip(){
+		Point[] shipShape = {
+				new Point(0,75),
+				new Point(38.25,75),
+				new Point(23.25,67.5),
+				new Point(42,67.5),
+
+				new Point(55,56.25),
+
+				new Point(42,45),
+				new Point(23.25,45),
+				new Point(38.25,37.5),
+				new Point(0,37.5),
+
+				new Point(15,56.25)
+		};
+
+		Point startingPosition = new Point((width -Ship.SHIP_WIDTH)/2, (height - Ship.SHIP_HEIGHT)/2);
+		int startingRotation = 0; // Start facing to the right
+
+		return new Ship(shipShape, startingPosition, startingRotation);
 	}
 
 	//  Create an array of random asteroids
@@ -80,8 +98,13 @@ public class Asteroids extends Game {
 	}
 
 	public void paint(Graphics brush) {
+		Color shipColor = null;
 		brush.setColor(Color.black);
 		brush.fillRect(0,0,width,height);
+
+		for (Star star : stars) {
+			star.paint(brush,null);
+		}
 
 		counter++;
 		brush.setColor(Color.white);
@@ -90,10 +113,54 @@ public class Asteroids extends Game {
 		for (Asteroid asteroid : randomAsteroids) {
 			asteroid.paint(brush,Color.white);
 			asteroid.move();
+			shipHasCollided = asteroid.collision(ship);
+			shipColor = dynamicallyColorShip();
 		}
-		ship.paint(brush,Color.red);
+		ship.paint(brush,shipColor);
 		ship.move();
 	}
+
+	//this is my helper method to make the ship blink after it collides
+	private Color dynamicallyColorShip() {
+		Color shipColor = Color.magenta;
+		if (shipHasCollided && shipColorSustainValue == 0){
+			shipColorSustainValue++;
+		}
+		if(shipColorSustainValue>0 && shipColorSustainValue<=shipColorMaxSustainValue){
+			if(shipColorSustainValue%9 == 0){
+				shipColor = Color.white;
+			}else{
+				shipColor = Color.red;
+			}
+			shipColorSustainValue++;
+		}else if(shipColorSustainValue > shipColorMaxSustainValue){
+			shipColorSustainValue = 0;
+			shipHasCollided = false;
+			shipColor = Color.magenta;
+		}
+
+		return shipColor;
+	}
+
+	// Create a certain number of stars with a given max radius
+	public Star[] createStars(int numberOfStars, int maxRadius) {
+		Star[] stars = new Star[numberOfStars];
+		for(int i = 0; i < numberOfStars; ++i) {
+			Point center = new Point
+					(Math.random() * SCREEN_WIDTH, Math.random() * SCREEN_HEIGHT);
+
+
+			int radius = (int) (Math.random() * maxRadius);
+			if(radius < 1) {
+				radius = 1;
+			}
+			stars[i] = new Star(center, radius);
+		}
+
+
+		return stars;
+	}
+
 
 	public static void main (String[] args) {
 		Asteroids a = new Asteroids();

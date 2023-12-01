@@ -131,7 +131,7 @@ public class SortingTest {
 
 	/** test MergeSort.sort */
 	
-	/***
+
 	@Test
 	public void testMergeSort() {
 		SortingAlgorithm<Integer> sorter = new MergeSort<Integer>();
@@ -181,11 +181,11 @@ public class SortingTest {
 
 		assertTrue(SortingAlgorithm.isSorted(values));
 	}
-	***/
+
 
 	/** test QuickSort.sort */
 	
-	/***
+
 	@Test
 	public void testQuickSort() {
 		SortingAlgorithm<Integer> sorter = new QuickSort<Integer>();
@@ -236,6 +236,6 @@ public class SortingTest {
 		assertTrue(SortingAlgorithm.isSorted(values));
 	}
 
-	****/
+
 
 }

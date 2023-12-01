@@ -110,4 +110,14 @@ public  abstract class Polygon implements Shape {
 		double area = findArea();
 		return new Point(Math.abs(sum.x/(6*area)),Math.abs(sum.y/(6*area)));
 	}
+
+	public boolean collision (Polygon ship){
+		Point[] points = ship.getPoints();
+		for(Point p : points){
+			if(this.contains(p)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
