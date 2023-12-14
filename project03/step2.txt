@@ -1,0 +1,5 @@
+REGEX:
+cs.westminsteru.edu:(80|443).*[POST|GET|HEAD].*" ([0-9]{3}) ([0-9]*).*"
+
+SED COMMAND:
+sed -E 's/cs.westminsteru.edu:(80|443).*[POST|GET|HEAD].*" ([0-9]{3}) ([0-9]*).*"/\1 \2 \3/g' < test_access.log.large

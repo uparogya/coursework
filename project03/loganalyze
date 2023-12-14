@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sed -E 's/cs.westminsteru.edu:(80|443).*[POST|GET|HEAD].*" ([0-9]{3}) ([0-9]*).*"/\1 \2 \3/g' < "$1" | ./analyze

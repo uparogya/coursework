@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if gcc $1.c -o $1; then
+    ./$1
+else
+    echo "Compilation Failed! 😔"
+fi

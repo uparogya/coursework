@@ -1,0 +1,12 @@
+#!/bin/bash
+
+i=5
+
+while [ $i -ge 0 ]; do
+    if [ $i -eq 0 ]; then
+        echo "Blastoff!"
+    else
+        echo $i
+    fi
+    i=$((i-1))
+done

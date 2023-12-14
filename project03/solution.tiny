@@ -1,0 +1,12 @@
+Requests:
+    1xx: 1
+    2xx: 13
+    3xx: 4
+    4xx: 1
+    5xx: 1
+    Total: 20
+Bytes transferred:
+    http: 980299410
+    https: 217622553
+    Total: 1197921963
+
