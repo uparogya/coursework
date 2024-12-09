@@ -1,0 +1,18 @@
+Image vs coordinates
+
+User image selection
+
+Change between color grid or array grid
+
+EXTRACTION: https://www.ncei.noaa.gov/maps/grid-extract/
+
+Am i accounting for total elevation change also, by doing cost from start + exact next cost
+what if i just do next elevation change -- Greedy
+
+Ask why A-star. Ask if instead of A-star Greedy is okay to do.
+Because:
+A-star adds cost from parent + estimation of 
+
+what would heuristic function give? total elevation change from next child to goal? rough distance from next child to goal?
+
+do we do closeness to the goal? & maybe print out maximum elevation change for both cases

@@ -1,0 +1,10 @@
+a = 4 
+b = 4
+d = 1
+
+b^d = 4
+a = 4
+
+a == b^d
+
+thus from master's theorem, O(n^d log n) = O(n^4 log n) = O(n log n)
