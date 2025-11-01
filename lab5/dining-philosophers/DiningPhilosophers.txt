@@ -1,0 +1,56 @@
+/**
+ * diningPhilosophers.monitor 
+ *
+ * A monitor solution to the dining philosophers problem.
+ * NOTE: This is a pseudocode solution written using a
+ * Java-like syntax. It is not valid Java code!
+ */
+
+monitor DiningPhilosophers
+{
+enum {THINKING, HUNGRY, EATING} state[5];
+condition self[5];
+
+	public DiningPhilosophers {
+		for (int i = 0; i < 5; i++)
+			state[i] = THINKING;
+	}
+
+	public pickUp(int i) {
+		state[i] = HUNGRY;
+		test(i);
+		if (state[i] != EATING)
+			self[i].wait;
+	}
+
+	public putDown(int i) {
+		state[i] = THINKING;
+		// test left and right neighbors
+		test((i + 4) % 5);
+		test((i + 1) % 5);
+	}
+
+	private test(int i) {
+		if ( (state[(i + 4) % 5]) != EATING) && (state[i] == HUNGRY) &&  
+			(state[(i + 1) % 5] != EATING) ) {
+			state[i] = EATING;
+			self[i].signal;
+		}
+	}
+}
+
+/**
+ * Each Philosopher then invokes:
+ *
+ *	DiningPhilosophers dp = new DiningPhilosophers();
+ *
+ *	while (true) {
+ *		dp.pickUp(i);
+ *
+ *		// eat for awhile
+ *
+ *		dp.putDown(i);
+ *
+ *		// think for awhile
+ *	}
+ */
